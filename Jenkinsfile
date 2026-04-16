@@ -6,6 +6,7 @@ pipeline {
     }
 
     stages {
+
         stage('Checkout') {
             steps {
                 git branch: 'main', url: 'https://github.com/paramananda-15/MyMavenSeleniumApp01.git'
@@ -14,17 +15,20 @@ pipeline {
 
         stage('Build') {
             steps {
-                sh 'mvn clean package'
+                sh 'mvn clean compile'
             }
         }
-    }
 
-    post {
-        success {
-            echo 'Build Successful'
+        stage('Test') {
+            steps {
+                sh 'mvn test'
+            }
         }
-        failure {
-            echo 'Build Failed'
+
+        stage('Package') {
+            steps {
+                sh 'mvn package'
+            }
         }
     }
 }
